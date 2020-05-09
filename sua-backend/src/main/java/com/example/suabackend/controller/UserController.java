@@ -2,6 +2,7 @@ package com.example.suabackend.controller;
 
 import com.example.suabackend.entity.User;
 import com.example.suabackend.service.UserService;
+import com.example.suabackend.utils.ResponseText;
 import com.example.suabackend.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +19,7 @@ import static com.example.suabackend.utils.Utils.BASE_URL;
 
 @CrossOrigin(origins = Utils.CROSS_ORIGIN_URL)
 @RestController
-@RequestMapping(BASE_URL + "users")
+@RequestMapping(BASE_URL + "user")
 public class UserController {
     @Autowired
     UserService userService;
@@ -28,8 +29,17 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/register")
-    public String register(){
-        return "dsf";
+
+    @PostMapping(
+            value = "/register"
+    )
+    public ResponseText register(@RequestBody User user){
+        if(userService.isExist(user))
+            return new ResponseText("Username already exist.", false);
+
+        userService.add(user);
+
+
+        return new ResponseText("Please check your email.", true);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.suabackend.utils;
 
+import javax.mail.*;
+import javax.mail.internet.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -10,8 +12,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.Random;
 
 public class Utils {
     public static final String CROSS_ORIGIN_URL = "http://localhost:4200";
@@ -153,5 +158,66 @@ public class Utils {
 
     public static boolean isEqualLists (List listA, List listB){
         return isEqualLists(new ArrayList(listA), new ArrayList(listB));
+    }
+
+
+    public static void sendmail(String email, String subject, String htmlContent) throws AddressException, MessagingException, IOException {
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("noreply.generated.email@gmail.com", "abcd#1234");
+            }
+        });
+        Message msg = new MimeMessage(session);
+        msg.setFrom(new InternetAddress("noreply.generated.email@gmail.com", false));
+
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("zchandikaz@gmail.com"));
+        msg.setSubject(subject);
+        msg.setContent(htmlContent, "text/html");
+        msg.setSentDate(Date.valueOf(LocalDateTime.now().toLocalDate()));
+
+        Transport.send(msg);
+    }
+
+    public static String sendVerifyEmail(String email){
+        String otp = getRandomString();
+
+        String content = null;
+        try {
+            content = new String(Files.readAllBytes(Paths.get("files/email-verify-template.html")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        content = String.format(content, otp, otp);
+
+        try {
+            Utils.sendmail(email, "Test", content);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return otp;
+    }
+
+    public static String getRandomString() {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        return generatedString;
     }
 }
