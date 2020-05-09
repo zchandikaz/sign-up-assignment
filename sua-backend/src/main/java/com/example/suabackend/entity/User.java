@@ -95,6 +95,13 @@ public class User implements UserDetails, Serializable {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
+        switch (getType()){
+            case 0:
+                grantedAuthorities.add(()->"read");
+                grantedAuthorities.add(()->"write");
+                break;
+        }
+
         return grantedAuthorities;
     }
 
