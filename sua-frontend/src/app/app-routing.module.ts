@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { AuthenticationService } from './authentication.service';
 import { Observable } from 'rxjs';
+import { MessagePageComponent } from './message-page/message-page.component';
 
 
 @Injectable()
@@ -28,6 +29,7 @@ const routes: Routes = [
   {path: '', component: HomeComponent, canActivate:[AccessGuard ]},  
   {path: 'logout', component: LoginComponent, canActivate:[AccessGuard ]},  
   {path: 'register', component: RegisterComponent}, 
+  {path: 'msg', component: MessagePageComponent}, 
 ];
 
 @NgModule({

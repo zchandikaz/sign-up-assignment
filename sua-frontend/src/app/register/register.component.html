@@ -2,9 +2,9 @@
   <span>Registration</span>
 </mat-toolbar>
 <div class="main-dev">
-  <mat-card class="my-card">
+  <mat-card class="register-card">
     <mat-card-content>
-      <form class="my-form">
+      <form class="register-form">
         <mat-form-field class="full-width">
           <mat-label>First Name</mat-label>
           <input [formControl]="firstName" matInput placeholder="First name" name="fname" required>
@@ -19,27 +19,24 @@
         </mat-form-field>
         <mat-form-field class="full-width">
           <mat-label>Email</mat-label>
-          <input [formControl]="email" matInput placeholder="Email" name="email">
+          <input [formControl]="email" matInput placeholder="Email" name="email" required>
         </mat-form-field>
         <mat-form-field class="full-width">
           <mat-label>Password</mat-label>
-          <input [formControl]="password" matInput placeholder="Password" name="password">
+          <input [formControl]="password" type="password" matInput placeholder="Password" name="password" required>
         </mat-form-field>
-        <section class="example-section">
-          <label class="example-margin">Gender:</label><br/>
+        <mat-form-field class="full-width">
+          <mat-label>Confirm Password</mat-label>
+          <input [formControl]="cpassword" type="password" matInput placeholder="Confirm Password" name="password" required>
+        </mat-form-field>
+        <section>
+          <label>Gender:</label><br/>
           <mat-radio-group [formControl]="gender">
-            <mat-radio-button class="mat-radio" value="after">Male</mat-radio-button>
-            <mat-radio-button class="mat-radio" value="before">Female</mat-radio-button>
-            <mat-radio-button class="mat-radio" value="before">Other</mat-radio-button>
+            <mat-radio-button class="mat-radio" value="0">Male</mat-radio-button>
+            <mat-radio-button class="mat-radio" value="1">Female</mat-radio-button>
+            <mat-radio-button class="mat-radio" value="2">Other</mat-radio-button>
           </mat-radio-group>
         </section>
-
-        <mat-form-field>
-          <mat-label>Date of Birth</mat-label>
-          <input [formControl]="dob" matInput [matDatepicker]="picker" placeholder="Choose a date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
       </form>
     </mat-card-content>
     <mat-card-actions>

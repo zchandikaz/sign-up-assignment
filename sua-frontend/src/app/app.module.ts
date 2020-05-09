@@ -16,6 +16,7 @@ import { HttpInterceptorService } from './http-interceptor.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ConfirmDialogComponent } from './utils/confirm-dialog/confirm-dialog.component';
 import { MenuComponent } from './menu/menu.component';
+import { MessagePageComponent } from './message-page/message-page.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MenuComponent } from './menu/menu.component';
     LoginComponent,
     RegisterComponent,
     ConfirmDialogComponent,
-    MenuComponent
+    MenuComponent,
+    MessagePageComponent
   ],
   imports: [
     BrowserModule,
