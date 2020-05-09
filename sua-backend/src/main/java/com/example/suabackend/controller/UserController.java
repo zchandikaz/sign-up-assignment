@@ -45,9 +45,22 @@ public class UserController {
     }
 
     @GetMapping(
-            value = "/verify/{username}/{verifyCode}"
+        value = "/status/{username}"
     )
-    public ResponseText register(@PathVariable("username") String username, @PathVariable("verifyCode") String verifyCode){
+    public int getStatus(@PathVariable("username") String username) {
+        try{
+            User user = userService.getUser(username);
+            return user.getStatus();
+        }catch (Exception e){
+
+        }
+        return -1;
+    }
+
+    @GetMapping(
+        value = "/verify/{username}/{verifyCode}"
+    )
+    public ResponseText verify(@PathVariable("username") String username, @PathVariable("verifyCode") String verifyCode){
         try{
             User user = userService.getUser(username);
             if(user.getStatus()==0 && user.getVerifyCode().equals(verifyCode)) {
