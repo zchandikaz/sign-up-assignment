@@ -95,18 +95,6 @@ public class User implements UserDetails, Serializable {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        switch (getType()){
-            case 0:
-                grantedAuthorities.add(()->"search");
-                grantedAuthorities.add(()->"reservation");
-                break;
-            case 1:
-                grantedAuthorities.add(()->"insert");
-                grantedAuthorities.add(()->"update");
-                grantedAuthorities.add(()->"delete");
-                break;
-        }
-
         return grantedAuthorities;
     }
 
