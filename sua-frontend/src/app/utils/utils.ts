@@ -1,9 +1,13 @@
 import { HttpHeaders } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { DeprecatedI18NPipesModule } from '@angular/common';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+
+
 
 export class Utils{
-    static title:String = "Reservation Agent";
+    static title:String = "Sign Up Assignment";    
+    static AUTH_URL:String = "http://localhost:8080/api/auth/";
 
     public static addExtraHeaders(h: string | { [name: string]: string | string[]; }): string | { [name: string]: string | string[]; }{
         h['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Origin, Accept';
@@ -21,6 +25,20 @@ export class Utils{
         return h;
     }    
 
+    
+    static alertDialog(dialog: MatDialog, content: String, onOk:Function = null){
+        dialog.closeAll();
+        dialog.open(ConfirmDialogComponent, {
+            data: {
+                content: content,
+                title: this.title,
+                btn1Text: "Ok",
+                btn2Text: "",
+                onBtn1: this.replaceNull(onOk, ()=>{}),
+                onBtn2: ()=>{}
+            }
+        });
+    }
 
     static replaceNull(v:any, d:any):any{
         return v==null?d:v;

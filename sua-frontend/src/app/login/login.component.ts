@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatInput } from '@angular/material';
+import { MatInput, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
+import { Utils } from '../utils/utils';
 
 @Component({
   selector: 'app-login',
@@ -20,13 +21,16 @@ export class LoginComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
   }
 
   handleLogin(){         
+    console.log(this.username.value);
+    console.log(this.password.value);
     this.authenticationService.authenticationService(this.username.value, this.password.value).subscribe((result)=>{
       this.invalidLogin = false;
       this.loginSuccess = true;
@@ -35,6 +39,7 @@ export class LoginComponent implements OnInit {
     }, ()=>{
       this.invalidLogin = true;
       this.loginSuccess = false;
+      Utils.alertDialog(this.dialog, "Invalid username or password");
     });
   }
 }

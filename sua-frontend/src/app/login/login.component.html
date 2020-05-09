@@ -6,17 +6,17 @@
     <mat-card-content>
       <form class="my-form">
         <mat-form-field class="full-width">
-          <mat-label>Email</mat-label>
-          <input [formControl]="email" matInput placeholder="Email" name="email">
+          <mat-label>User </mat-label>
+          <input [formControl]="username" matInput placeholder="User Name" name="username">
         </mat-form-field>
         <mat-form-field class="full-width">
           <mat-label>Password</mat-label>
-          <input [formControl]="password" matInput placeholder="Password" name="password">
+          <input [formControl]="password" matInput type="password" placeholder="Password" name="password">
         </mat-form-field>
       </form>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button (click)="login()" color="primary">LOGIN</button>
+      <button mat-raised-button (click)=handleLogin() color="primary">LOGIN</button>
     </mat-card-actions>
   </mat-card>
 </div>

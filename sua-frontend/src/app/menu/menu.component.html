@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <!--  <span>HOME</span> -->
+       <span><a class="normal-link" href="/">HOME</a></span>
+       <span class="spacer"></span>
+       <div *ngIf="!isLoggedIn">
+            <a  mat-button  routerLink="/register">Register</a>
+            <a  mat-button  routerLink="/login">Login</a>
+       </div>
+       <div *ngIf="isLoggedIn">        
+        <a  mat-button (click)=handleLogout() routerLink="/logout">Logout</a>
+   </div>       
+    </mat-toolbar-row>
+  </mat-toolbar>
