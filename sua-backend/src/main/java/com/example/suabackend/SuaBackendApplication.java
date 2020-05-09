@@ -14,10 +14,10 @@ import static com.example.suabackend.utils.Utils.BASE_URL;
 public class SuaBackendApplication {
 
 	public static void main(String[] args) {
-//		SpringApplication.run(SuaBackendApplication.class, args);
+		SpringApplication.run(SuaBackendApplication.class, args);
 		System.out.println("http://localhost:8080" + BASE_URL);
 
-        Utils.sendVerifyEmail("zchandikaz@gmail.com");
+
     }
 
 }

@@ -48,6 +48,12 @@ public class User implements UserDetails, Serializable {
     @Column(name = "gender")
     private int gender;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "verifyCode")
+    private String verifyCode;
+
     public User() {
     }
 
@@ -58,16 +64,17 @@ public class User implements UserDetails, Serializable {
         this.status = status;
     }
 
-    public User(String username, String password, String firstName, String lastName, String address, int gender) {
+    public User(String username, String password, String firstName, String lastName, String address, String email, int gender) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.gender = gender;
+        this.email = email;
     }
 
-    public User(String username, String password, int type, int status, String firstName, String lastName, String address, int gender) {
+    public User(String username, String password, int type, int status, String firstName, String lastName, String email, String address, int gender) {
         this.username = username;
         this.password = password;
         this.type = type;
@@ -76,6 +83,7 @@ public class User implements UserDetails, Serializable {
         this.lastName = lastName;
         this.address = address;
         this.gender = gender;
+        this.email = email;
     }
 
     @Override
@@ -144,6 +152,22 @@ public class User implements UserDetails, Serializable {
         this.gender = gender;
     }
 
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -209,6 +233,8 @@ public class User implements UserDetails, Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", gender=" + gender +
+                ", email='" + email + '\'' +
+                ", verifyCode='" + verifyCode + '\'' +
                 '}';
     }
 }

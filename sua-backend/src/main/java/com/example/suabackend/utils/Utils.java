@@ -1,5 +1,7 @@
 package com.example.suabackend.utils;
 
+import org.springframework.scheduling.annotation.Async;
+
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.awt.*;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 public class Utils {
     public static final String CROSS_ORIGIN_URL = "http://localhost:4200";
@@ -160,7 +163,6 @@ public class Utils {
         return isEqualLists(new ArrayList(listA), new ArrayList(listB));
     }
 
-
     public static void sendmail(String email, String subject, String htmlContent) throws AddressException, MessagingException, IOException {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -184,7 +186,7 @@ public class Utils {
         Transport.send(msg);
     }
 
-    public static String sendVerifyEmail(String email){
+    public static String sendVerifyEmail(String username, String email){
         String otp = getRandomString();
 
         String content = null;
@@ -193,15 +195,20 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        content = String.format(content, otp, otp);
+        final String htmlContent = String.format(content, username+"/"+otp, username+"/"+otp);
 
-        try {
-            Utils.sendmail(email, "Test", content);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        CompletableFuture.runAsync(()->{
+            try {
+                Utils.sendmail(email, "Account Verification", htmlContent);
+                System.out.printf("Verification email sent to %s \n", email);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+
 
         return otp;
     }
