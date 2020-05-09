@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
+@Table(name = "sua_user")
 public class User implements UserDetails, Serializable {
     @Id
     @Column(name = "username")
