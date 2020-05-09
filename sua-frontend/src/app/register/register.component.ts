@@ -53,8 +53,9 @@ export class RegisterComponent implements OnInit {
     if(this.isEmpty(this.lastName.value, "Last Name"))
       return false;
 
-    if(this.isEmpty(this.username.value, "User Name"))
-      return false;
+    let usernameValidate = Utils.validateUsername(this.username.value)
+    if(!usernameValidate[0])
+      return Utils.alertDialog(this.dialog, usernameValidate[1].toString());
 
     if(this.isEmpty(this.address.value, "Address"))
       return false;

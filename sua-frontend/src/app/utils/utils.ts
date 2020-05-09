@@ -89,6 +89,26 @@ export class Utils {
     return false
   }
 
+  static validateUsername(username) {
+    var msg = "Success";
+    var valid = true;
+
+    var illegalChars = /\W/; // allow letters, numbers, and underscores
+ 
+    if (username == "" || username == null) {
+        msg = "Username can not be empty.\n";
+        valid =  false;
+    } else if ((username.length < 5) || (username.length > 15)) {
+        msg = "The username is the wrong length. Length should be between 5 and 15. \n";      
+		    valid = false;
+    } else if (illegalChars.test(username)) {
+        msg = "The username contains illegal characters.\n";
+        valid = false
+    } 
+
+    return [valid, msg];
+}
+
 }
 
 export class LocalStorage {
