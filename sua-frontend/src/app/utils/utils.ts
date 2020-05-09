@@ -95,10 +95,9 @@ export class Utils {
 
     var illegalChars = /\W/; // allow letters, numbers, and underscores
  
-    if (username.value == "") {
+    if (username == "" || username == null) {
         msg = "Username can not be empty.\n";
         valid =  false;
- 
     } else if ((username.length < 5) || (username.length > 15)) {
         msg = "The username is the wrong length. Length should be between 5 and 15. \n";      
 		    valid = false;
