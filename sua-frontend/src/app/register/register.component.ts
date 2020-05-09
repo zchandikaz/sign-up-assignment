@@ -16,6 +16,7 @@ export class RegisterComponent implements OnInit {
 
   firstName = new FormControl();
   lastName = new FormControl();
+  username = new FormControl();
   address = new FormControl();
   email = new FormControl();
   password = new FormControl();
@@ -43,13 +44,16 @@ export class RegisterComponent implements OnInit {
   register(){       
     // Utils.alertDialog(this.dialog, this.gender.value);
 
-    [this.firstName, this.lastName, this.address, this.email, this.password, this.cpassword].forEach(v=>v.markAllAsTouched());  
+    [this.firstName, this.lastName, this.username, this.address, this.email, this.password, this.cpassword].forEach(v=>v.markAllAsTouched());  
     this.firstName.markAllAsTouched(); // trigger validate
 
     if(this.isEmpty(this.firstName.value, "First Name"))
       return false;
 
     if(this.isEmpty(this.lastName.value, "Last Name"))
+      return false;
+
+    if(this.isEmpty(this.username.value, "User Name"))
       return false;
 
     if(this.isEmpty(this.address.value, "Address"))
@@ -72,18 +76,32 @@ export class RegisterComponent implements OnInit {
       return Utils.alertDialog(this.dialog, "Please select your gender");
     }
 
-    console.log(this.gender.value);
-
-    this.userService.requestSignUp({
+    let userData = {
       firstName: this.firstName.value,
       lastName: this.lastName.value,
+      username: this.username.value,
       address: this.address.value,
       email: this.email.value,
       password: this.password.value,
       gender: this.gender.value
+    };
+
+    this.userService.status(userData.username).subscribe(status => {
+      if(status == "0"){
+        Utils.alertDialog(this.dialog, "This user account need to be verified. No need to register again.");      
+      } else if(status == "-1"){
+        this.userService.requestSignUp(userData).subscribe( result => {       
+          if(result['success'])
+            this.router.navigate(['/msg'], { queryParams: { msg: result['text'] } });          
+          else
+            Utils.alertDialog(this.dialog, result['text']);
+        });    
+      } else {
+        Utils.alertDialog(this.dialog, "User name already exist. Try another");
+      }
+
     });
 
     
-    this.router.navigate(['/msg'], { queryParams: { msg: 'Please check your email.' } });
   }
 }
