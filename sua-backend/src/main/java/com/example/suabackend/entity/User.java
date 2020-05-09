@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
+@Table(name = "sua_user")
 public class User implements UserDetails, Serializable {
     @Id
     @Column(name = "username")
@@ -25,11 +25,34 @@ public class User implements UserDetails, Serializable {
 
     @Column(name = "type")
     @ColumnDefault("0")
-    private int type;
+    private int type = 0;
 
+    /**
+     * 0 - not verified
+     * 1 - verified
+     * 2 - cancelled
+     */
     @Column(name = "status")
     @ColumnDefault("0")
-    private int status;
+    private int status = 0;
+
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "gender")
+    private int gender;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "verifyCode")
+    private String verifyCode;
 
     public User() {
     }
@@ -39,6 +62,28 @@ public class User implements UserDetails, Serializable {
         this.password = password;
         this.type = type;
         this.status = status;
+    }
+
+    public User(String username, String password, String firstName, String lastName, String address, String email, int gender) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.gender = gender;
+        this.email = email;
+    }
+
+    public User(String username, String password, int type, int status, String firstName, String lastName, String email, String address, int gender) {
+        this.username = username;
+        this.password = password;
+        this.type = type;
+        this.status = status;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.gender = gender;
+        this.email = email;
     }
 
     @Override
@@ -75,6 +120,54 @@ public class User implements UserDetails, Serializable {
         this.status = status;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,39 +175,66 @@ public class User implements UserDetails, Serializable {
         User user = (User) o;
         return getType() == user.getType() &&
                 getStatus() == user.getStatus() &&
+                getGender() == user.getGender() &&
                 Objects.equals(getUsername(), user.getUsername()) &&
-                Objects.equals(getPassword(), user.getPassword());
+                Objects.equals(getPassword(), user.getPassword()) &&
+                Objects.equals(getFirstName(), user.getFirstName()) &&
+                Objects.equals(getLastName(), user.getLastName()) &&
+                Objects.equals(getAddress(), user.getAddress());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getPassword(), getType(), getStatus());
+        return Objects.hash(getUsername(), getPassword(), getType(), getStatus(), getFirstName(), getLastName(), getAddress(), getGender());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
+        switch (getType()){
+            case 0:
+                grantedAuthorities.add(()->"read");
+                grantedAuthorities.add(()->"write");
+                break;
+        }
+
         return grantedAuthorities;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return getStatus()==0;
+        return getStatus()==1;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return getStatus()==0;
+        return getStatus()==1;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return getStatus()==0;
+        return getStatus()==1;
     }
 
     @Override
     public boolean isEnabled() {
-        return getStatus()==0;
+        return getStatus()==1;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", type=" + type +
+                ", status=" + status +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", gender=" + gender +
+                ", email='" + email + '\'' +
+                ", verifyCode='" + verifyCode + '\'' +
+                '}';
     }
 }

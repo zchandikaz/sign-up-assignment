@@ -32,6 +32,14 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public boolean isExist(String username){
+        return getUser(username) != null;
+    }
+
+    public boolean isExist(User user){
+        return getUser(user.getUsername()) != null;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = getUser(s);
